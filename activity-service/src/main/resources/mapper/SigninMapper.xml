@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SigninMapper" >
+  <resultMap id="BaseResultMap" type="com.activity.bean.Signin" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="hdid" property="hdid" jdbcType="INTEGER" />
+    <result column="setDate" property="setdate" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userId, hdid, setDate, type
+  </sql>
+  <sql id="Condition" >
+    <where>
+    	<if test="hdId != null">
+    		hdid = #{hdId}
+    	</if>
+    	<if test="userId != null and userId != ''">
+    		AND userId = #{userId}
+    	</if>
+    	<if test="type != null">
+    		AND type = #{type}
+    	</if>
+    </where>
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from signin
+    <include refid="Condition"></include>
+    <if test="pageNum != null and pageSize != null">
+    	LIMIT #{pageNum}, #{pageSize}
+    </if>
+  </select>
+  <select id="countByParam" resultType="int" parameterType="map" >
+    select COUNT(1)
+    from signin
+    <include refid="Condition"></include>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from signin
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from signin
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.activity.bean.Signin"  useGeneratedKeys="true" keyProperty="id">
+    insert into signin (id, userId, hdid, 
+      setDate, type)
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{hdid,jdbcType=INTEGER}, 
+      #{setdate,jdbcType=TIMESTAMP}, #{type,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.activity.bean.Signin"  useGeneratedKeys="true" keyProperty="id">
+    insert into signin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="hdid != null" >
+        hdid,
+      </if>
+      <if test="setdate != null" >
+        setDate,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="hdid != null" >
+        #{hdid,jdbcType=INTEGER},
+      </if>
+      <if test="setdate != null" >
+        #{setdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.activity.bean.Signin" >
+    update signin
+    <set >
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="hdid != null" >
+        hdid = #{hdid,jdbcType=INTEGER},
+      </if>
+      <if test="setdate != null" >
+        setDate = #{setdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.activity.bean.Signin" >
+    update signin
+    set userId = #{userid,jdbcType=INTEGER},
+      hdid = #{hdid,jdbcType=INTEGER},
+      setDate = #{setdate,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

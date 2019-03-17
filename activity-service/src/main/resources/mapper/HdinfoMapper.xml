@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="HdinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.activity.bean.Hdinfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="typeId" property="typeid" jdbcType="INTEGER" />
+    <result column="jbId" property="jbid" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="title1" property="title1" jdbcType="VARCHAR" />
+    <result column="setDate" property="setdate" jdbcType="DATE" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="unitId" property="unitid" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="SMALLINT" />
+  </resultMap>
+  <resultMap id="SigninMap" type="com.activity.dto.HdInfoDTO" extends="BaseResultMap">
+  	<collection property="signinList" ofType="com.activity.bean.Signin" columnPrefix="sign_">
+  		<result column="id" property="id" jdbcType="INTEGER" />
+	    <result column="userId" property="userid" jdbcType="INTEGER" />
+	    <result column="hdid" property="hdid" jdbcType="INTEGER" />
+	    <result column="setDate" property="setdate" jdbcType="TIMESTAMP" />
+	    <result column="type" property="type" jdbcType="SMALLINT" />
+  	</collection>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, typeId, jbId, title, title1, setDate, userId, unitId, state
+  </sql>
+  <sql id="Column_List">
+  	h.id, h.typeId, h.jbId, h.title, h.title1, h.setDate, h.userId, h.unitId, h.state
+  </sql>
+  <sql id="Select_Condition">
+  	<where>
+  		<if test="typeId != null">
+  			typeId = #{typeId}
+  		</if>
+  		<if test="jbId != null">
+  			AND jbId = #{jbId}
+  		</if>
+  		<if test="title != null and title != ''">
+  			AND ((title LIKE CONCAT('%', #{title}, '%') OR (title1 LIKE CONCAT('%', #{title}, '%')) 
+  		</if>
+  		<if test="setDate != null and setDate != ''">
+  			AND setDate = #{setDate}
+  		</if>
+  		<if test="userId != null">
+  			AND userId = #{userId}
+  		</if>
+ 		<if test="unitId != null">
+  			AND unitId = #{unitId}
+  		</if>
+   		<if test="state != null">
+   			AND state = #{state}
+   		</if>
+  	</where>
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from hdinfo
+    <include refid="Select_Condition"></include>
+    <if test="pageNum != null and pageSize != null">
+    	LIMIT #{pageNum}, #{pageSize}
+    </if>
+  </select>
+  <select id="countByParam" resultType="int" parameterType="map" >
+    select COUNT(1)
+    from hdinfo
+    <include refid="Select_Condition"></include>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hdinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hdinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.activity.bean.Hdinfo"  useGeneratedKeys="true" keyProperty="id">
+    insert into hdinfo (id, typeId, jbId, 
+      title, title1, setDate, 
+      userId, unitId, state
+      )
+    values (#{id,jdbcType=INTEGER}, #{typeid,jdbcType=INTEGER}, #{jbid,jdbcType=INTEGER}, 
+      #{title,jdbcType=VARCHAR}, #{title1,jdbcType=VARCHAR}, #{setdate,jdbcType=DATE}, 
+      #{userid,jdbcType=INTEGER}, #{unitid,jdbcType=INTEGER}, #{state,jdbcType=SMALLINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.activity.bean.Hdinfo"  useGeneratedKeys="true" keyProperty="id">
+    insert into hdinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="typeid != null" >
+        typeId,
+      </if>
+      <if test="jbid != null" >
+        jbId,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="title1 != null" >
+        title1,
+      </if>
+      <if test="setdate != null" >
+        setDate,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="unitid != null" >
+        unitId,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="typeid != null" >
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="jbid != null" >
+        #{jbid,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="title1 != null" >
+        #{title1,jdbcType=VARCHAR},
+      </if>
+      <if test="setdate != null" >
+        #{setdate,jdbcType=DATE},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="unitid != null" >
+        #{unitid,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.activity.bean.Hdinfo" >
+    update hdinfo
+    <set >
+      <if test="typeid != null" >
+        typeId = #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="jbid != null" >
+        jbId = #{jbid,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="title1 != null" >
+        title1 = #{title1,jdbcType=VARCHAR},
+      </if>
+      <if test="setdate != null" >
+        setDate = #{setdate,jdbcType=DATE},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="unitid != null" >
+        unitId = #{unitid,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.activity.bean.Hdinfo" >
+    update hdinfo
+    set typeId = #{typeid,jdbcType=INTEGER},
+      jbId = #{jbid,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      title1 = #{title1,jdbcType=VARCHAR},
+      setDate = #{setdate,jdbcType=DATE},
+      userId = #{userid,jdbcType=INTEGER},
+      unitId = #{unitid,jdbcType=INTEGER},
+      state = #{state,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

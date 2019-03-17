@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="DatainfoMapper" >
+  <resultMap id="BaseResultMap" type="com.activity.bean.Datainfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="fileName" property="filename" jdbcType="VARCHAR" />
+    <result column="dataType" property="datatype" jdbcType="VARCHAR" />
+    <result column="setDate" property="setdate" jdbcType="DATE" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="filePath" property="filepath" jdbcType="VARCHAR" />
+    <result column="hdId" property="hdid" jdbcType="INTEGER" />
+    <result column="userID" property="userid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, fileName, dataType, setDate, title, filePath, hdId, userID
+  </sql>
+  <sql id="Condition">
+  	<where>
+  		<if test="hdId != null">
+  			hdId = #{hdId}
+  		</if>
+  		<if test="userId != null">
+  			AND userID = #{userId}
+  		</if>
+  		<if test="title != null and title != ''">
+  			AND title LIKE CONCAT('%', title, '%')
+  		</if>
+  		<if test="fileName != null and fileName != ''">
+  			AND fileName LIKE CONCAT('%', fileName, '%')
+  		</if>
+  		<if test="setDate != null and setDate != ''">
+  			AND setDate = #{setDate}
+  		</if>
+  		<if test="dataType != null and dataType != ''">
+  			AND dataType = #{dataType}
+  		</if>
+  	</where>
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from datainfo
+    <include refid="Condition"></include>
+    <if test="pageNum != null and pageSize != null">
+    	LIMIT #{pageNum}, #{pageSize}
+    </if>
+  </select>
+  <select id="countByParam" resultType="int" parameterType="map" >
+    select COUNT(1)
+    from datainfo
+    <include refid="Condition"></include>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from datainfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByParam" parameterType="map" >
+    delete from datainfo
+   	<include refid="Condition"></include>
+  </delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from datainfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.activity.bean.Datainfo"  useGeneratedKeys="true" keyProperty="id">
+    insert into datainfo (id, fileName, dataType, 
+      setDate, title, filePath, 
+      hdId, userID)
+    values (#{id,jdbcType=INTEGER}, #{filename,jdbcType=VARCHAR}, #{datatype,jdbcType=VARCHAR}, 
+      #{setdate,jdbcType=DATE}, #{title,jdbcType=VARCHAR}, #{filepath,jdbcType=VARCHAR}, 
+      #{hdid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.activity.bean.Datainfo"  useGeneratedKeys="true" keyProperty="id">
+    insert into datainfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="filename != null" >
+        fileName,
+      </if>
+      <if test="datatype != null" >
+        dataType,
+      </if>
+      <if test="setdate != null" >
+        setDate,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="filepath != null" >
+        filePath,
+      </if>
+      <if test="hdid != null" >
+        hdId,
+      </if>
+      <if test="userid != null" >
+        userID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="filename != null" >
+        #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="datatype != null" >
+        #{datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="setdate != null" >
+        #{setdate,jdbcType=DATE},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="filepath != null" >
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="hdid != null" >
+        #{hdid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.activity.bean.Datainfo" >
+    update datainfo
+    <set >
+      <if test="filename != null" >
+        fileName = #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="datatype != null" >
+        dataType = #{datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="setdate != null" >
+        setDate = #{setdate,jdbcType=DATE},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="filepath != null" >
+        filePath = #{filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="hdid != null" >
+        hdId = #{hdid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        userID = #{userid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.activity.bean.Datainfo" >
+    update datainfo
+    set fileName = #{filename,jdbcType=VARCHAR},
+      dataType = #{datatype,jdbcType=VARCHAR},
+      setDate = #{setdate,jdbcType=DATE},
+      title = #{title,jdbcType=VARCHAR},
+      filePath = #{filepath,jdbcType=VARCHAR},
+      hdId = #{hdid,jdbcType=INTEGER},
+      userID = #{userid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="UserinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.activity.bean.Userinfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
+    <result column="niCheng" property="nicheng" jdbcType="VARCHAR" />
+    <result column="zh" property="zh" jdbcType="VARCHAR" />
+    <result column="pwd" property="pwd" jdbcType="VARCHAR" />
+    <result column="setDate" property="setdate" jdbcType="TIMESTAMP" />
+    <result column="dwid" property="dwid" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="idNo" property="idno" jdbcType="CHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userName, niCheng, zh, pwd, setDate, dwid, phone, idNo, email
+  </sql>
+  <sql id="selectCondition">
+  	<where>
+    	<if test="nicheng != null and nicheng != ''">
+    		niCheng LIKE CONCAT('%', #{nicheng}, '%')
+    	</if>
+    	<if test="zh != null and zh != ''">
+    		AND zh = #{zh}
+    	</if>
+    	<if test="pwd != null and pwd != ''">
+    		AND pwd = #{pwd}
+    	</if>
+    	<if test="dwid != null and dwid != ''">
+    		AND dwid = #{dwid}
+    	</if>
+    	<if test="username != null and username != ''">
+    		AND userName LIKE CONCAT('%', #{username}, '%')
+    	</if>
+    </where> 
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM userinfo
+    <include refid="selectCondition"></include>
+    <if test="pageNum != null and pageSize != null">
+    	LIMIT #{pageNum}, #{pageSize}
+    </if>  
+  </select>
+  <select id="countByParam" resultType="int" parameterType="map" >
+    SELECT COUNT(1)
+    FROM userinfo
+    <include refid="selectCondition"></include>  
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from userinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from userinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.activity.bean.Userinfo" useGeneratedKeys="true" keyProperty="id">
+    insert into userinfo (id, userName, niCheng, 
+      zh, pwd, setDate, 
+      dwid, phone, idNo, email
+      )
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{nicheng,jdbcType=VARCHAR}, 
+      #{zh,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, #{setdate,jdbcType=TIMESTAMP}, 
+      #{dwid,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{idno,jdbcType=CHAR}, #{email,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.activity.bean.Userinfo" useGeneratedKeys="true" keyProperty="id">
+    insert into userinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        userName,
+      </if>
+      <if test="nicheng != null" >
+        niCheng,
+      </if>
+      <if test="zh != null" >
+        zh,
+      </if>
+      <if test="pwd != null" >
+        pwd,
+      </if>
+      <if test="setdate != null" >
+        setDate,
+      </if>
+      <if test="dwid != null" >
+        dwid,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="idno != null" >
+        idNo,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="nicheng != null" >
+        #{nicheng,jdbcType=VARCHAR},
+      </if>
+      <if test="zh != null" >
+        #{zh,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="setdate != null" >
+        #{setdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dwid != null" >
+        #{dwid,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="idno != null" >
+        #{idno,jdbcType=CHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.activity.bean.Userinfo" >
+    update userinfo
+    <set >
+      <if test="username != null" >
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="nicheng != null" >
+        niCheng = #{nicheng,jdbcType=VARCHAR},
+      </if>
+      <if test="zh != null" >
+        zh = #{zh,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="setdate != null" >
+        setDate = #{setdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dwid != null" >
+        dwid = #{dwid,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="idno != null" >
+        idNo = #{idno,jdbcType=CHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.activity.bean.Userinfo" >
+    update userinfo
+    set userName = #{username,jdbcType=VARCHAR},
+      niCheng = #{nicheng,jdbcType=VARCHAR},
+      zh = #{zh,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      setDate = #{setdate,jdbcType=TIMESTAMP},
+      dwid = #{dwid,jdbcType=INTEGER},
+      phone = #{phone,jdbcType=VARCHAR},
+      idNo = #{idno,jdbcType=CHAR},
+      email = #{email,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

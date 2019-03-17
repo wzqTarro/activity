@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SignupMapper" >
+  <resultMap id="BaseResultMap" type="com.activity.bean.Signup" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="hdId" property="hdid" jdbcType="INTEGER" />
+    <result column="setDate" property="setdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userId, hdId, setDate
+  </sql>
+  <sql id="Condition">
+  	<where>
+  		<if test="userId != null">
+  			userId = #{userId}
+  		</if>
+  		<if test="hdId != null">
+  			AND hdId = #{hdId}
+  		</if>
+  		<if test="setDate != null and setDate != ''">
+  			AND setDate = #{setDate}
+  		</if>
+  	</where>
+  </sql>
+  <select id="selectByParam" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from signup
+    <include refid="Condition"/>
+  </select>
+  <select id="countByParam" resultType="int" parameterType="map" >
+    select COUNT(1)
+    from signup
+    <include refid="Condition"/>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from signup
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from signup
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.activity.bean.Signup"  useGeneratedKeys="true" keyProperty="id">
+    insert into signup (id, userId, hdId, 
+      setDate)
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{hdid,jdbcType=INTEGER}, 
+      #{setdate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.activity.bean.Signup"  useGeneratedKeys="true" keyProperty="id">
+    insert into signup
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="hdid != null" >
+        hdId,
+      </if>
+      <if test="setdate != null" >
+        setDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="hdid != null" >
+        #{hdid,jdbcType=INTEGER},
+      </if>
+      <if test="setdate != null" >
+        #{setdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.activity.bean.Signup" >
+    update signup
+    <set >
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="hdid != null" >
+        hdId = #{hdid,jdbcType=INTEGER},
+      </if>
+      <if test="setdate != null" >
+        setDate = #{setdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.activity.bean.Signup" >
+    update signup
+    set userId = #{userid,jdbcType=INTEGER},
+      hdId = #{hdid,jdbcType=INTEGER},
+      setDate = #{setdate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
